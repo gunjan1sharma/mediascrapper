@@ -1,4 +1,4 @@
-import LogoImage from "../assets/images/link.png";
+import LogoImage from "../assets/images/vmedia.png";
 import { Link } from "react-router-dom";
 
 function Footer(props: any) {

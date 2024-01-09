@@ -23,7 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import ColorImage from "../assets/images/colour.png";
-import LogoImage from "../assets/images/link.png";
+import LogoImage from "../assets/images/vmedia.png";
 import { ColorContext } from "../extras/ColorContext";
 import MenuIcon from "@mui/icons-material/Menu";
 import SingleColor from "./SingleColor";

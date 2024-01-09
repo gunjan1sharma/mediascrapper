@@ -14,6 +14,7 @@ import axios from "axios";
 import { Medum, Root } from "../extras/types";
 import SingleComponent from "../components/SingleComponent";
 import ImageComponent from "../components/ImageComponent";
+import ReactJson from "react-json-view";
 
 const API_BASE_URL = `http://192.168.1.88:9999/extras/v1/api/parsing/media-parser?siteUrl=`;
 var static_site_url = "";
@@ -21,7 +22,7 @@ var static_site_url = "";
 function HomePage(props: any) {
   const [videoUrl, setVideoUrl] = useState("");
   const [inVideoUrl, setInVideoUrl] = useState("");
-  const [audioResponse, setAudioResponse] = useState<Medum[]>();
+  const [audioResponse, setAudioResponse] = useState<any>();
   const [playVideo, setPlayVideo] = useState(false);
   const [isTermsAggred, setIsTermsAggred] = useState(true);
   const [isDownloadSuccess, setIsDownloadSuccess] = useState(false);
@@ -104,10 +105,9 @@ function HomePage(props: any) {
     axios.post<Root>(API_BASE_URL + videoUrl).then(
       (result) => {
         console.log("Hitting Website Parser  API is successful");
-        // setAudioResponse(result.data.images);
         setPlayVideo(true);
         setInVideoUrl(videoUrl);
-        if (result.data.media.length === 0) {
+        if (result.data.media === undefined) {
           alert(
             "Unable to parse this website due to captcha protected or some other issues..."
           );
@@ -115,7 +115,7 @@ function HomePage(props: any) {
           return;
         }
 
-        setAudioResponse(result.data.media);
+        setAudioResponse(result.data);
         setDisplayedItems(result.data.media.slice(0, itemsPerPage));
         setIsDownloadSuccess(true);
         setTimeout(() => {
@@ -231,14 +231,14 @@ function HomePage(props: any) {
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-4">
+      {/* <div className="grid sm:grid-cols-2 md:grid-cols-4">
         {isDownloadSuccess &&
           displayedItems!.map((img, index) => {
             return <SingleComponent key={index} datasrc={img.datasrc} />;
           })}
-      </div>
+      </div> */}
 
-      {isDownloadSuccess && (
+      {/* {isDownloadSuccess && (
         <Pagination
           page={currentPage}
           onChange={handlePageChange}
@@ -247,6 +247,19 @@ function HomePage(props: any) {
           variant="outlined"
           color="primary"
         />
+      )} */}
+
+      {isDownloadSuccess && (
+        <div className="w-screen overflow-auto">
+          <ReactJson
+            style={{ overflowX: "scroll" }}
+            src={audioResponse}
+            enableClipboard={true}
+            displayObjectSize={true}
+            displayDataTypes={true}
+            theme={"colors"}
+          />
+        </div>
       )}
     </div>
   );
